@@ -1,0 +1,25 @@
+[package]
+name = "claude-vault"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sovereign Shovels <github.com/sovereign-shovels>"]
+license = "Apache-2.0"
+description = "Local-first, vendor-agnostic vault for all your AI conversations"
+repository = "https://github.com/sovereign-shovels/claude-vault"
+rust-version = "1.75"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+chrono = "0.4"
+dirs = "5"
+anyhow = "1"
+uuid = { version = "1", features = ["v4"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true

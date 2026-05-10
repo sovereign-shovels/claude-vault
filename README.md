@@ -2,75 +2,151 @@
 
 > Local-first, vendor-agnostic vault for all your AI conversations.
 
-**Status:** v0.1 — in development.
+**Status:** v0.1 — ready to use.
 
-**Sovereignty:** sovereign-by-construction. BYO endpoint, BYO key, BYO model.
-A local-only configuration is documented and tested.
+**Sovereignty:** sovereign-by-construction. No cloud, no login, no telemetry.
 
-This is a community project, **not affiliated with Claude**.
+This is a community project, **not affiliated with Anthropic**.
 Best-effort community shovel — no SLA, no roadmap commitments.
 
 ---
 
 ## What this is
 
-Local-first, vendor-agnostic vault for all your AI conversations.
+AI conversations are scattered. Claude.ai keeps yours. ChatGPT keeps yours. Gemini keeps yours. Each platform owns the search, the export, and the destruction policy.
+
+claude-vault is a local SQLite vault with FTS5 full-text search. Import your exports, search across all of them, tag the useful ones. Your data, on your machine, forever.
 
 ## What this isn't
 
+- No real-time cloud sync
+- No proprietary export format
+- No auto-summarization in v0.1 (v0.5)
+- Not a chat client — it's a vault for conversations you've already had
+
 See [PRD-v1.md](./PRD-v1.md) for the full anti-scope definition.
+
+---
 
 ## Install
 
-### From package manager (when v0.1 ships)
+### From source
 
-```bash
-npm install && npm run tauri build
-```
-
-### Build from source
+**Prerequisites:**
+- [Rust](https://rustup.rs/) 1.75+
 
 ```bash
 git clone https://github.com/sovereign-shovels/claude-vault.git
 cd claude-vault
-```
-# Install dependencies
-npm install
 
-# Build desktop app
-npm run tauri build
+# Build
+cargo build --release
 
-# Or run in dev mode
-npm run tauri dev
+# The binary is at target/release/claude-vault
 ```
+
+---
+
+## Usage
+
+### Import conversations
+
+```bash
+# Claude.ai export (JSON)
+claude-vault import conversations.json --provider claude
+
+# ChatGPT export (JSON)
+claude-vault import conversations.json --provider chatgpt
+
+# Auto-detect provider
+claude-vault import conversations.json
+```
+
+### Search
+
+```bash
+# Full-text search across all messages
+claude-vault search "how do I use tokio"
+
+# Results show conversation title, speaker role, and message preview
+```
+
+### List conversations
+
+```bash
+claude-vault list
+```
+
+### Tag conversations
+
+```bash
+# Tag a conversation
+claude-vault tag <conversation-id> rust
+
+# List tags for a conversation
+claude-vault tags <conversation-id>
+
+# List all tags in vault
+claude-vault tags
+```
+
+### Stats
+
+```bash
+claude-vault stats
+```
+
+---
 
 ## Configure
 
-You bring the model. By default `claude-vault` tries to use a local provider:
-
-- For LLM endpoints: Ollama at `http://localhost:11434`
-- For voice endpoints: configurable, see docs
-
-To use any other provider (Claude, GPT, Hermes, OpenRouter, Sarvam, etc.):
-
 ```toml
 # ~/.config/claude-vault/config.toml
-[provider]
-endpoint = "https://api.your-provider.com/v1"
-api_key_env = "YOUR_PROVIDER_KEY"
-model = "your-model-name"
+[vault]
+vault_path = "/path/to/your/vault.db"
 ```
 
-Anthropic, OpenAI, and Sarvam endpoints all work. Local Ollama, llama.cpp,
-LM Studio, and vLLM all work via their OpenAI-compatible endpoints.
+Or via environment variable:
+
+```bash
+export CLAUDE_VAULT_PATH="/path/to/your/vault.db"
+```
+
+Default vault location:
+- macOS: `~/Library/Application Support/claude-vault/vault.db`
+- Linux: `~/.local/share/claude-vault/vault.db`
+- Windows: `%APPDATA%\claude-vault\vault.db`
+
+---
+
+## Exporting from providers
+
+### Claude.ai
+1. Go to claude.ai → Settings → Account → Export Data
+2. Download the ZIP, extract the JSON
+3. `claude-vault import claude_export.json`
+
+### ChatGPT
+1. Go to chat.openai.com → Settings → Data controls → Export
+2. Download the ZIP, extract `conversations.json`
+3. `claude-vault import conversations.json --provider chatgpt`
+
+---
 
 ## Why this exists
 
-See [PRD-v1.md](./PRD-v1.md) for the problem statement and rationale.
+Every major AI subreddit has variants of "how do I export my chats?" There is no cross-provider vault. Until now.
+
+See [PRD-v1.md](./PRD-v1.md) for the full problem statement and rationale.
 
 ## What's next
 
-See [PRD-v1.md](./PRD-v1.md) for the full v0.1 → v0.5 → v1.0 plan.
+- **v0.5:** Cross-provider conversation diff, tagging UI, prompt extraction, export to markdown/Obsidian
+- **v1.0:** Full second-brain integration with Obsidian/Logseq, smart clustering
+
+See [PRD-v1.md](./PRD-v1.md) for the full roadmap.
+
+---
 
 ## License
 
@@ -78,9 +154,6 @@ Apache 2.0. See [LICENSE](./LICENSE).
 
 ## Part of sovereign-shovels
 
-This repo is part of the [sovereign-shovels](https://github.com/sovereign-shovels)
-portfolio of small, focused, sovereign-by-construction AI utilities.
+This repo is part of the [sovereign-shovels](https://github.com/sovereign-shovels) portfolio of small, focused, sovereign-by-construction AI utilities.
 
-Other shovels: claude-vault, bulbul-studio, saaras-tray, claude-prompts,
-ollama-cron, mcp-forge, sarvam-pdf, agent-console, sarvam-meet, obsidian-llm,
-llm-diff, claude-bridge, claude-radio, sarvam-cast.
+Other shovels: claude-vault, bulbul-studio, saaras-tray, claude-prompts, ollama-cron, mcp-forge, sarvam-pdf, agent-console, sarvam-meet, obsidian-llm, llm-diff, claude-bridge, claude-radio, sarvam-cast.
