@@ -1,0 +1,36 @@
+# Build artifacts
+target/
+dist/
+build/
+node_modules/
+*.pyc
+__pycache__/
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Secrets — never commit
+.env
+.env.local
+*.key
+*.pem
+config.local.toml
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+
+# Tauri
+src-tauri/target/
+
+# Rust
+*.rlib
+*.rmeta
