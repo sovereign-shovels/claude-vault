@@ -2,7 +2,7 @@
 
 > Local-first, vendor-agnostic vault for all your AI conversations.
 
-**Status:** v0.1 — planning. Not yet released.
+**Status:** v0.1 — in development.
 
 **Sovereignty:** sovereign-by-construction. BYO endpoint, BYO key, BYO model.
 A local-only configuration is documented and tested.
@@ -18,18 +18,38 @@ Local-first, vendor-agnostic vault for all your AI conversations.
 
 ## What this isn't
 
-Not real-time cloud sync. Not a proprietary export format. Not an account-walled service. Not (in v0.1) a summarization or chat interface — just import, store, search.
+See [PRD-v1.md](./PRD-v1.md) for the full anti-scope definition.
 
 ## Install
 
-> Coming with v0.1 release.
+### From package manager (when v0.1 ships)
+
+```bash
+npm install && npm run tauri build
+```
+
+### Build from source
+
+```bash
+git clone https://github.com/sovereign-shovels/claude-vault.git
+cd claude-vault
+```
+# Install dependencies
+npm install
+
+# Build desktop app
+npm run tauri build
+
+# Or run in dev mode
+npm run tauri dev
+```
 
 ## Configure
 
 You bring the model. By default `claude-vault` tries to use a local provider:
 
 - For LLM endpoints: Ollama at `http://localhost:11434`
-- For voice endpoints: configurable, see [docs/configure.md]
+- For voice endpoints: configurable, see docs
 
 To use any other provider (Claude, GPT, Hermes, OpenRouter, Sarvam, etc.):
 
@@ -46,7 +66,7 @@ LM Studio, and vLLM all work via their OpenAI-compatible endpoints.
 
 ## Why this exists
 
-AI conversations are scattered. Claude.ai keeps yours. ChatGPT keeps yours. Gemini keeps yours. Each platform owns the search, the export, and the destruction policy. There is no place where you can search across all of them, tag the useful exchanges, extract the prompts that worked, or keep a record after a vendor decides to wipe history. claude-vault is that place — local-first, sovereign, never asks you to log in.
+See [PRD-v1.md](./PRD-v1.md) for the problem statement and rationale.
 
 ## What's next
 
