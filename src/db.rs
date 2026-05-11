@@ -201,7 +201,7 @@ mod tests {
     use std::path::PathBuf;
 
     fn test_vault() -> Vault {
-        let tmp = PathBuf::from("/tmp/claude-vault-test.db");
+        let tmp = std::env::temp_dir().join(format!("claude-vault-test-{}.db", std::process::id()));
         let _ = std::fs::remove_file(&tmp);
         Vault::open(&tmp).unwrap()
     }
