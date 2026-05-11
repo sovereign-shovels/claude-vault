@@ -61,3 +61,4 @@ What we're monitoring (from PRD-v1):
 Someone shipping a polished cross-provider vault first. Ship early.
 
 Status: not triggered.
+- 2026-05-10 — hardened against local Ollama — all CLI paths verified, compile+tests green

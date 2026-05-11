@@ -11,6 +11,25 @@ Best-effort community shovel — no SLA, no roadmap commitments.
 
 ---
 
+## Architecture
+
+```
+┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
+│  Claude export  │────▶│              │     │   FTS5 index    │
+│   (JSON/ZIP)    │     │   claude-    │────▶│  (full-text     │
+├─────────────────┤     │   vault      │     │    search)      │
+│  ChatGPT export │────▶│  (SQLite)    │     ├─────────────────┤
+│   (JSON/ZIP)    │     │              │     │    Tags table   │
+└─────────────────┘     └──────────────┘     └─────────────────┘
+                                │
+                                ▼
+                        ┌──────────────┐
+                        │  CLI query   │
+                        │ search/list/ │
+                        │  tag/stats   │
+                        └──────────────┘
+```
+
 ## What this is
 
 AI conversations are scattered. Claude.ai keeps yours. ChatGPT keeps yours. Gemini keeps yours. Each platform owns the search, the export, and the destruction policy.
@@ -94,6 +113,25 @@ claude-vault tags
 
 ```bash
 claude-vault stats
+```
+
+**Demo output:**
+```
+$ claude-vault import test-claude-export.json --provider claude
+Imported 2 messages from claude export.
+Vault now has 1 conversations, 2 messages.
+
+$ claude-vault search "test message"
+Found 1 result(s):
+
+[claude] Test Conversation (user):
+  Hello, this is a test message.
+
+$ claude-vault stats
+Vault: ~/Library/Application Support/claude-vault/vault.db
+Conversations: 1
+Messages: 2
+Unique tags: 0
 ```
 
 ---
